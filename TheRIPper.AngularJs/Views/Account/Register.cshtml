@@ -1,0 +1,30 @@
+﻿<div class="container">
+    <div class="card">
+        <article class="card-body">
+            <a href="#/signin" class="float-right btn btn-outline-primary">Sign in</a>
+            <h4 class="card-title mb-4 mt-1">Register</h4>
+            <form ng-submit="register()" class="row">
+                <div class="col-sm">
+                    <div class="row"><input class="form-control margin-top-5" type="text" ng-model="username" placeholder="Email Address" /></div>
+                    <br />
+                    <div class="row"><input class="form-control margin-top-5" type="password" ng-model="password1" placeholder="Password" /></div>
+                    <br />
+                    <div class="row"><input class="form-control margin-top-5" type="password" ng-model="password2" placeholder="Confirm Password" /></div>
+                    <br />
+                    <div class="row"><input class="btn btn-block btn-outline-primary margin-top-5" type="submit" value="Register" /></div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-sm">
+                    <br />
+                    <ul class="list-group margin-top-5" ng-show="showErrorMessage">
+                        <li class="list-group-item list-group-item-danger" ng-repeat="message in errorMessages">
+                            {{message}}
+                        </li>
+                    </ul>
+                    <div class="row alert alert-success margin-top-5" ng-show="showSuccessMessage">{{successMessage}}</div>
+                </div>
+            </div>
+        </article>
+    </div> <!-- card.// -->
+</div>

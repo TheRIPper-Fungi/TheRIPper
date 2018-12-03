@@ -1,0 +1,23 @@
+﻿<div class="container">
+    <div class="card">
+        <article class="card-body">
+            <a href="#/register" class="float-right btn btn-outline-primary">Sign up</a>
+            <h4 class="card-title mb-4 mt-1">Sign in</h4>
+            <form ng-submit="signIn()">
+                <div class="form-group">
+                    <label>Your email</label>
+                    <input class="form-control" type="text" ng-model="username" placeholder="Username" />
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <a class="float-right" href="#/forgotpassword">Forgot?</a>
+                    <label>Your password</label>
+                    <input class="form-control" type="password" ng-model="password" placeholder="********" />
+                </div> <!-- form-group// -->
+
+                <div class="form-group">
+                    <input class="btn btn-primary margin-top-5" type="submit" value="Sign In" />
+                </div> <!-- form-group// -->
+            </form>
+        </article>
+    </div> <!-- card.// -->
+</div>

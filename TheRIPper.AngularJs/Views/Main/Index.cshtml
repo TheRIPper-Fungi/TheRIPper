@@ -1,0 +1,42 @@
+﻿<div class="container mx-auto">
+
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">The RIPper</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#/home">Home</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="#/background">Background</a>
+                </li>
+
+                <li class="nav-item" ng-cloak ng-show="loggedIn">
+                    <a class="nav-link" href="#/files">Files</a>
+                </li>
+
+                <li class="nav-item" ng-cloak ng-show="loggedIn">
+                    <a class="nav-link" href="" ng-click="logout()">{{username}}Sign Out</a>
+                </li>
+
+                <li class="nav-item" ng-cloak ng-hide="loggedIn">
+                    <a class="nav-link" href="#/signin">Sign In</a>
+                </li>
+
+                <li class="nav-item" ng-cloak ng-hide="loggedIn">
+                    <a class="nav-link" href="#/register">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+@* All content here *@
+<div ng-view style="margin-top:50px">
+</div>
