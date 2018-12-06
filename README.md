@@ -22,7 +22,7 @@ There are a few pre-built distributions of The RIPPer available, download the zi
 
 [Linux 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/latest-linux/The.RIPper.-.Linux.-.64-Bit.zip)
 
-[OSX (Coming Soon)]()
+[OSX 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/latest-osx/OSX.64bit.zip)
 
 ## Licence
 
