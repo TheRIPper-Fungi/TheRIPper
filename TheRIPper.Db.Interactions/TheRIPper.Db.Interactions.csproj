@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TheRIPper.BL\TheRIPper.BL.csproj" />
+    <ProjectReference Include="..\TheRIPper.Db\TheRIPper.Db.csproj" />
+  </ItemGroup>
+
+</Project>

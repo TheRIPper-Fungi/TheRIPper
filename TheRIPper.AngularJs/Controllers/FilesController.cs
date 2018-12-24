@@ -1,15 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Bio;
+using Bio.IO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TheRIPper.AngularJs.Models;
 using TheRIPper.BL;
 using TheRIPper.BL.SequenceHelpers;
+using TheRIPper.Db.Interactions.Files;
+using TheRIPper.Db.Interactions.Sequences;
 
 namespace TheRIPper.AngularJs.Controllers
 {
@@ -40,6 +46,7 @@ namespace TheRIPper.AngularJs.Controllers
                 var files = collection.Files;
 
                 var file = files[0];
+
 
                 if (file.Length > 0) {
                     using (var stream = new FileStream(filePath, FileMode.Create)) {
@@ -73,7 +80,7 @@ namespace TheRIPper.AngularJs.Controllers
                     var webRoot = _env.WebRootPath;
 
                     var filePath = System.IO.Path.Combine(webRoot + string.Format("{0}files{0}fasta{0}", Path.DirectorySeparatorChar), fileModel.Location);
-                    SequencesStored = SequenceHelpers.AddSequencesToDatabase(SequenceHelpers.LoadSequence(filePath), (int)CreatedFileId);
+                    SequencesStored = SequenceInteractions.AddSequencesToDatabase(SequenceHelpers.LoadSequence(filePath), (int)CreatedFileId);
                 }
 
                 return new JsonResult(JsonConvert.SerializeObject(new { IsCreated, SequencesStored })) { ContentType = "application/json", StatusCode = 200 };

@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-CoreTemplate.Razor-EBA4A911-D8AE-48B4-8E04-BA0B4F64AFE0</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\app\directives\**" />
+    <Content Remove="wwwroot\app\directives\**" />
+    <EmbeddedResource Remove="wwwroot\app\directives\**" />
+    <None Remove="wwwroot\app\directives\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
@@ -22,12 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\app\directives\" />
     <Folder Include="wwwroot\files\fasta\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TheRIPper.BL\TheRIPper.BL.csproj" />
+    <ProjectReference Include="..\TheRIPper.Db.Interactions\TheRIPper.Db.Interactions.csproj" />
     <ProjectReference Include="..\TheRIPper.Db\TheRIPper.Db.csproj" />
   </ItemGroup>
 

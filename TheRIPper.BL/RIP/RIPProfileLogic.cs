@@ -1,4 +1,6 @@
-﻿using TheRIPPer.Db.Data;
+﻿
+using Bio;
+using Bio.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +10,16 @@ namespace TheRIPper.BL.RIP
 {
     public class RIPProfileLogic
     {
-        private static ApplicationDbContext db = new ApplicationDbContext();
 
         //Make class models for the return
-        public static RIPProfileModels RIPFileProfile(int FileId, int window, int slide, double compositeRequirement, int compositeCountRequirement) {
-            List<int> sequenceIds = SequenceHelpers.SequenceHelpers.GetFileSequenceIds(FileId);
-
+        public static RIPProfileModels RIPFileProfile(List<ISequence> sequences, int window, int slide, double compositeRequirement, int compositeCountRequirement) {
+            //List<int> sequenceIds = SequenceHelpers.SequenceHelpers.GetFileSequenceIds(FileId);
+            
             //The below code focuses on the LRAR
             List<LRARModels> LRARs = new List<LRARModels>();
 
-            Enumerable.Range(0, sequenceIds.Count).AsParallel().ForAll(f => {
-                var LRAR_Range = LRARLogic.LRARSequence(sequenceIds[f], window, slide, compositeRequirement, compositeCountRequirement);
+            Enumerable.Range(0, sequences.Count()).AsParallel().ForAll(f => {
+                var LRAR_Range = LRARLogic.LRARSequence(sequences[f], window, slide, compositeRequirement, compositeCountRequirement);
                 LRARs.AddRange(LRAR_Range);
             });
 
@@ -48,10 +49,10 @@ namespace TheRIPper.BL.RIP
             }
 
             //Get the File total base pairs
-            IFile file = new FileLogic(FileId);
-            long totalBP = file.GetFileBasePairs();
+            //IFile file = new FileLogic(FileId);
+            long totalBP = sequences.Sum(s => s.ConvertToString().Length);
 
-            var RIPregions = RIPLogic.RIPGenome(SequenceHelpers.SequenceHelpers.GetISequencesFromDatabaseByFileId(FileId), window, slide);
+            var RIPregions = RIPLogic.RIPGenome(sequences, window, slide);
 
             int countPositiveComposite = RIPregions.Where(w => w.Composite >= compositeRequirement && w.Product >= 1.1 && w.Substrate <= 0.9).Count();
 
@@ -59,14 +60,14 @@ namespace TheRIPper.BL.RIP
 
             double LRARAverageGCContent = LRARs.Count > 0 ? Math.Round(LRARs.Average(a => a.GCContent), 2) : 0;
 
-            var sequences = SequenceHelpers.SequenceHelpers.GetISequencesFromDatabaseByFileId(FileId);
+            //var sequences = SequenceHelpers.SequenceHelpers.GetISequencesFromDatabaseByFileId(FileId);
             double totalGCContent = GCContent.GCContentLogic.GCContentMultipleSequenceTotal(sequences);
 
             //How many windows where looked at, this is determined by the slide size though;
             decimal WindowsInvestigated = Math.Round((decimal)(totalBP / slide), 0);
 
-            return new  RIPProfileModels{
-                FileName = db.Files.Where(w => w.Id == FileId).Select(s => s.FileName).FirstOrDefault(),
+            return new RIPProfileModels {
+                FileName = "Find suitable file name", //db.Files.Where(w => w.Id == FileId).Select(s => s.FileName).FirstOrDefault(),
                 FileBP = totalBP,
                 Count = CountOfLRAR,
                 SumAverage = Math.Round(LRARAverageSize, 2),

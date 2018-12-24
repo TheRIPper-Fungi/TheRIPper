@@ -6,6 +6,7 @@ using System.Linq;
 using TheRIPper.BL.Models;
 using TheRIPper.BL.RIP;
 using TheRIPper.BL.SequenceHelpers;
+using TheRIPper.Db.Interactions.Sequences;
 
 namespace TheRIPper.AngularJs.Controllers
 {
@@ -50,7 +51,8 @@ namespace TheRIPper.AngularJs.Controllers
         [HttpGet]
         [Route("api/rip/indexes/{FileId}")]
         public JsonResult GetRIPProfile(int FileId) {
-            dynamic x = RIPLogic.SequenceRIPPercentages(FileId, 1000, 500, 0.3)
+            List<ISequence> sequences = SequenceInteractions.GetISequencesFromDatabaseByFileId(FileId);
+            dynamic x = RIPLogic.SequenceRIPPercentages(sequences, 1000, 500, 0.3)
                 .Select(s => new { SequenceName = s.SequenceName, RIPIndex = s.RIPIndex })
                 .ToList();
             return new JsonResult(JsonConvert.SerializeObject(x)) { ContentType = "application/json", StatusCode = 200 };
@@ -62,7 +64,7 @@ namespace TheRIPper.AngularJs.Controllers
             if (WindowSize == null) { WindowSize = 1000; };
             if (SlidingSize == null) { SlidingSize = 500; };
 
-            List<ISequence> sequences = SequenceHelpers.GetISequencesFromDatabaseByFileId(FileId);
+            List<ISequence> sequences = SequenceInteractions.GetISequencesFromDatabaseByFileId(FileId);
             List<RIPModels> RIPdata = RIPLogic.RIPGenome(sequences, (int)WindowSize, (int)SlidingSize);
 
             return new JsonResult(JsonConvert.SerializeObject(RIPdata)) { ContentType = "application/json", StatusCode = 200 };
@@ -74,7 +76,9 @@ namespace TheRIPper.AngularJs.Controllers
             if (WindowSize == null) { WindowSize = 1000; };
             if (SlidingSize == null) { SlidingSize = 500; };
 
-            List<RIPModels> ripModels = RIPLogic.RIPSequence(SequenceId, (int)WindowSize, (int)SlidingSize);
+            ISequence sequence = SequenceInteractions.GetSequenceBySequenceId(SequenceId);
+
+            List<RIPModels> ripModels = RIPLogic.RIPSplitAndSequence(sequence, (int)WindowSize, (int)SlidingSize);
 
             return new JsonResult(JsonConvert.SerializeObject(ripModels)) { ContentType = "application/json", StatusCode = 200 };
         }
@@ -82,7 +86,10 @@ namespace TheRIPper.AngularJs.Controllers
         [HttpGet]
         [Route("api/rip/lrar/sequence/{SequenceId}/{window}/{slide}/{compositeRequirement}/{compositeCountRequirement}")]
         public JsonResult LRARSequence(int SequenceId, int window, int slide, double compositeRequirement, int compositeCountRequirement) {
-            List<LRARModels> LRARs = LRARLogic.LRARSequence(SequenceId, window, slide, compositeRequirement, compositeCountRequirement);
+
+            ISequence sequence = SequenceInteractions.GetSequenceBySequenceId(SequenceId);
+
+            List<LRARModels> LRARs = LRARLogic.LRARSequence(sequence, window, slide, compositeRequirement, compositeCountRequirement);
 
             return new JsonResult(JsonConvert.SerializeObject(LRARs)) { ContentType = "application/json", StatusCode = 200 };
         }
@@ -90,13 +97,15 @@ namespace TheRIPper.AngularJs.Controllers
         [HttpGet]
         [Route("api/rip/lrar/file/{FileId}/{window}/{slide}/{compositeRequirement}/{compositeCountRequirement}")]
         public JsonResult LRARFile(int FileId, int window, int slide, double compositeRequirement, int compositeCountRequirement) {
-            List<int> sequenceIds = SequenceHelpers.GetFileSequenceIds(FileId);
+            List<int> sequenceIds = SequenceInteractions.GetFileSequenceIds(FileId);
 
             List<LRARModels> LRARs = new List<LRARModels>();
 
             Enumerable.Range(0, sequenceIds.Count).AsParallel().ForAll(f => {
                 var id = sequenceIds[f];
-                LRARs.AddRange(LRARLogic.LRARSequence(id, window, slide, compositeRequirement, compositeCountRequirement));
+                ISequence sequence = SequenceInteractions.GetSequenceBySequenceId(id);
+
+                LRARs.AddRange(LRARLogic.LRARSequence(sequence, window, slide, compositeRequirement, compositeCountRequirement));
             });
 
 
@@ -115,7 +124,10 @@ namespace TheRIPper.AngularJs.Controllers
         [HttpGet]
         [Route("api/rip/profile/file/{FileId}/{window}/{slide}/{compositeRequirement}/{compositeCountRequirement}")]
         public JsonResult RIPProfileFile(int FileId, int window, int slide, double compositeRequirement, int compositeCountRequirement) {
-            var results = RIPProfileLogic.RIPFileProfile(FileId, window, slide, compositeRequirement, compositeCountRequirement);
+
+            List<ISequence> sequences = SequenceInteractions.GetISequencesFromDatabaseByFileId(FileId);
+            
+            var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, compositeCountRequirement);
 
             return new JsonResult(JsonConvert.SerializeObject(results)) { ContentType = "application/json", StatusCode = 200 };
         }

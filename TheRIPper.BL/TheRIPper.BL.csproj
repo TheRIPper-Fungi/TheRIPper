@@ -8,8 +8,4 @@
     <PackageReference Include="NetBio.Core" Version="3.0.0-alpha" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TheRIPper.Db\TheRIPper.Db.csproj" />
-  </ItemGroup>
-
 </Project>

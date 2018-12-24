@@ -1,0 +1,42 @@
+﻿<div class="row">
+    <div class="col-xs-12 offset-md-1 col-md-2">
+        <h3>Create a New File</h3>
+        <input type="file" name="fileup" id="fileup" value="" class="form-control" data-toggle="popover" data-content="Upload nucleotide genome or scaffold assembly in FASTA format" />
+        <br />
+
+        <input type="button" value="Upload File" ng-click="upload()" class="btn btn-block btn-outline-success" />
+        <br />
+        <div ng-if="uploadingFile" style="display:flex;align-items:center;justify-content:center;flex-direction:column; height:400px">
+            <h3>Uploading File</h3>
+            <img src="~/images/DNA.svg" alt="Loading..." />
+        </div>
+        
+    </div>
+    <div class="col-xs-12 col-md-8">
+        <h3>Files</h3>
+        <div ng-show="loadingFiles" style="display:flex;align-items:center;justify-content:center; height:400px">
+            <h3>Loading Files</h3>
+            <img src="~/images/DNA.svg" alt="Loading..." />
+        </div>
+        <table class="table table-responsive" ng-show="!loadingFiles">
+            <thead>
+                <tr>
+                    <td>File Name</td>
+                    <td>Sequence Count</td>
+                    <td>Options</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="f in files">
+                <td>{{f.FileName}}</td>
+                <td>{{f.SequenceCount}}</td>
+                <td style="display:flex;justify-content:flex-start;">
+                    <a href="#/sequences/{{f.FileName}}/{{f.Id}}" class="btn btn-sm btn-outline-success" title="Choose a scaffold or contic for RIP analyses using a sliding window approach">RIP Sequence</a>
+                    <a href="#/rip/file/{{f.FileName}}" class="btn btn-sm btn-outline-success" title="Perform RIP analysis on entire genome assembly using a sliding window approach">RIP Genome</a>
+                    <a href="#/rip/lrar/file/{{f.FileName}}" class="btn btn-sm btn-outline-success" title="Calculate RIP and RIP statistics for LRARs of the entire genome assembly">Calculate LRAR</a>
+                    <a href="#/rip/profile/file/{{f.FileName}}" class="btn btn-sm btn-outline-success" title="A RIP profile provides statistics on RIP for sequenced genome representatives. The RIP profile includes statistics on the average RIP product, substrate, composite index values as well as the average GC content for all Large RIP Affected Regions (LRARs) identified">RIP Profile</a>
+                    <a href="" ng-click="removeFile(f.FileName)" class="btn btn-sm btn-outline-warning">Remove File</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

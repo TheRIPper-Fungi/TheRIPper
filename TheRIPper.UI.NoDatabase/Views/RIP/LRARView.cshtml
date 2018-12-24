@@ -1,0 +1,62 @@
+﻿<div class="container">
+    <h4>Settings</h4>
+    <table class="table table-fluid">
+        <tr>
+            <td>Window Size</td>
+            <td>
+                <input type="text" ng-model="window" placeholder="Window Size (1000bp)" class="form-control" />
+            </td>
+            <td>Slide Size</td>
+            <td>
+                <input type="text" ng-model="slide" placeholder="Sliding Size (500bp)" class="form-control" />
+            </td>
+            <td data-toggle="popover" data-content="Minimum composite RIP index value per window of the index chain">Composite cut-off value</td>
+            <td>
+                <input type="text" ng-model="compositeRequirement" class="form-control" />
+            </td>
+            <td data-toggle="popover" data-content="The total count of windows needed to be consecutively RIP affected to define a LRAR">Composite Index Chain</td>
+            <td>
+                <input type="text" ng-model="compositeCountRequirement" class="form-control" />
+            </td>
+        </tr>
+    </table>
+    <div style="display:flex;justify-content:center;">
+        <a href="" ng-click="update()" class="card-link">Update</a>
+    </div>
+    <hr />
+</div>
+
+<div ng-show="lrarLoading" style="display:flex;align-items:center;justify-content:center; height:600px">
+    <h3>Running analysis</h3>
+    <img src="~/images/DNA.svg" alt="Loading..." />
+</div>
+
+<div ng-hide="lrarLoading" class="container">
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Large RIP Affected Genomic Regions. LRAR analysis to detect genomic regions significantly impacted by RIP. Standard parameters for identifying LRARs are 1 000 bp window size and a 500bp step size, and seven consecutive windows (4 000 bp) displaying RIP activity based on RIP product, substrate and composite index values
+    </div>
+
+    <h2>Large RIP Affected Genomic Regions (LRAR)</h2>
+    <hr />
+
+    <div id="lrarGrid"
+         ui-grid="lrarGridOptions"
+         ui-grid-grouping
+         ui-grid-selection
+         ui-grid-resize-columns
+         ui-grid-exporter
+         class="grid ui-grid"
+         style="height:65vh;">
+    </div>
+
+    @*<div style="margin-top:25px" ng-if="type==='s'">
+            <canvas id="line" class="chart chart-line" chart-data="chartSize.data"
+                    chart-labels="chartSize.labels" chart-series="chartSize.series" chart-options="chartSize.options" chart-colors="chartSize.colors"></canvas>
+        </div>
+
+        <div style="margin-top:25px" ng-if="type==='1===2'">
+            <canvas id="bar" class="chart chart-bar" chart-data="sequenceSize.data"
+                    chart-labels="sequenceSize.labels" chart-series="sequenceSize.series" chart-options="sequenceSize.options"></canvas>
+        </div>*@
+</div>

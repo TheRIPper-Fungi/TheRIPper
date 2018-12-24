@@ -1,0 +1,157 @@
+﻿<div ng-show="ripProfileLoading" style="display:flex;align-items:center;justify-content:center; height:600px">
+    <h3>Running analysis</h3>
+    <img src="~/images/DNA.svg" alt="Loading..." />
+</div>
+
+<div class="container" ng-hide="ripProfileLoading">
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        RIP profile: Statistics on RIP for entire sequenced genome assembly. The RIP profile includes statistics on the average RIP- product, substrate, composite index values as well as the average GC content for all Large RIP Affected Regions (LRARs) identified.
+    </div>
+
+    <h2>{{profile.FileName}}</h2>
+    <hr />
+    @*<div class="card-columns">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Count Of LRAR</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.Count}} LRAR</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Genome Size (bp)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.FileBP}} bp.</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Product Average for LRAR</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.ProductAverage}} </h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Substrate Average for LRAR</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.SubstrateAverage}}</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Composite Average for LRAR</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.CompositeAverage}}</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Sum Of LRAR</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.SumOfLRAR}} bp.</h6>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total estimated Genome-wide RIP</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.EstimatedGenomeRIP}} %</h6>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Average size of large RIP affected genomic regions (bp)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.SumAverage}} bp.</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">RIP Postive Windows</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.RIPPositiveWindows}}</h6>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">LRAR Average GC Content</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{profile.LRARAverageGCContent}}</h6>
+                </div>
+            </div>
+        </div>*@
+
+    <div class="row" style="margin-top:50px;">
+        <table class="table table-responsive">
+            <tr>
+                <td>Name</td>
+                <td>{{profile.FileName}}</td>
+            </tr>
+            <tr>
+                <td>Genome Size (bp)</td>
+                <td>{{profile.FileBP}}</td>
+            </tr>
+
+            <tr>
+                <td>Total Windows Investigated</td>
+                <td>{{profile.WindowsInvestigated}}</td>
+            </tr>
+
+            <tr>
+                <td>GC Content of Entire Genome (%)</td>
+                <td>{{profile.TotalGCContent}}</td>
+            </tr>
+            <tr>
+                <td>RIP Positive Windows</td>
+                <td>{{profile.RIPPositiveWindows}} </td>
+            </tr>
+            <tr>
+                <td>Total Estimated Genome-Wide RIP (%)</td>
+                <td>{{profile.EstimatedGenomeRIP}}</td>
+            </tr>
+            <tr>
+                <td>Count of LRAR</td>
+                <td>{{profile.Count}}</td>
+            </tr>
+            <tr>
+                <td>Average Size of LRAR (bp)</td>
+                <td>{{profile.SumAverage}}</td>
+            </tr>
+
+            <tr>
+                <td>Average GC Content of LRAR (%)</td>
+                <td>{{profile.LRARAverageGCContent}}</td>
+            </tr>
+
+            <tr>
+                <td>Sum of All LRAR (bp)</td>
+                <td>{{profile.SumOfLRAR}}</td>
+            </tr>
+            <tr>
+                <td>Product Average for LRAR</td>
+                <td>{{profile.ProductAverage}}</td>
+            </tr>
+            <tr>
+                <td>Substrate Average for LRAR</td>
+                <td>{{profile.SubstrateAverage}}</td>
+            </tr>
+            <tr>
+                <td>Composite Average for LRAR</td>
+                <td>{{profile.CompositeAverage}}</td>
+            </tr>
+        </table>
+        <input type="button" name="downloadCSV" value="Download RIP Profile" ng-click="exportProfileAsCSV()" />
+    </div>
+
+    @*<div class="row" style="display:flex;justify-content:center">
+            <div id="ripProfileGrid"
+                 ui-grid="ripProfileGridOptions"
+                 ui-grid-grouping
+                 ui-grid-selection
+                 ui-grid-resize-columns
+                 ui-grid-exporter
+                 class="grid ui-grid"
+                 style="height:200px">
+            </div>
+        </div>*@
+</div>

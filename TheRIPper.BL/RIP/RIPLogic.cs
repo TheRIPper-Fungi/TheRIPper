@@ -1,7 +1,6 @@
 ﻿using Bio;
 using Bio.Algorithms.StringSearch;
 using Bio.Extensions;
-using TheRIPPer.Db.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -123,17 +122,10 @@ namespace TheRIPper.BL.RIP
         /// <param name="window">The amount of Base Pairs to inspect for each sub sequence</param>
         /// <param name="slidingSize">The amount of Base Pairs to slide forwards for each new window, usally half of the window size</param>
         /// <returns>Returns a list of RIPModel objects</returns>
-        public static List<RIPModels> RIPSequence(int SequenceId, int window, int slidingSize) {
-            ApplicationDbContext db = new ApplicationDbContext();
+        public static List<RIPModels> RIPSplitAndSequence(ISequence sequence, int window, int slidingSize) {
 
             List<SubSequenceModel> subSequences = new List<SubSequenceModel>();
             List<RIPModels> ripModels = new List<RIPModels>();
-
-            var sequenceObject = db.Sequences.Where(w => w.Id == SequenceId).FirstOrDefault();
-
-            ISequence sequence = new Sequence(Alphabets.AmbiguousDNA, sequenceObject.SequenceContent);
-
-            sequence.ID = sequenceObject.SequenceName;
 
             subSequences.AddRange(SequenceHelpers.SequenceHelpers.SplitSequence(sequence, window, slidingSize));
 
@@ -203,6 +195,8 @@ namespace TheRIPper.BL.RIP
                 subSequences.AddRange(SequenceHelpers.SequenceHelpers.SplitSequence(sequence, window, slidingSize));
             });
 
+
+
             subSequences.ForEach(ss => {
                 var ripResult = RIPLogic.RIPSequence(ss.SubSequence, ss.Start, ss.End);
                 ripResult.GCContent = Math.Round(GCContentLogic.GCContentSingleSequenceTotal(ss.SubSequence), 2);
@@ -214,10 +208,8 @@ namespace TheRIPper.BL.RIP
             return rips;
         }
 
-        public static List<(string SequenceName, double RIPIndex)> SequenceRIPPercentages(int FileId, int window, int slidingSize, double compositeLevel) {
+        public static List<(string SequenceName, double RIPIndex)> SequenceRIPPercentages(List<ISequence> sequences, int window, int slidingSize, double compositeLevel) {
             List<(string SequenceName, double RIPIndex)> ripIndexes = new List<(string SequenceName, double RIPIndex)>();
-
-            List<ISequence> sequences = SequenceHelpers.SequenceHelpers.GetISequencesFromDatabaseByFileId(FileId);
 
             List<RIPModels> ripResults = RIPGenome(sequences, window, slidingSize);
             List<string> sequenceNames = ripResults.Select(s => s.SequenceName).Distinct().ToList();

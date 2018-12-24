@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] The RIPper</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="~/css/site.min.css" />
+        <link href="~/css/uiGrid.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/lib/ui-grid/ui-grid.min.css" />
+    </environment>
+    <environment exclude="Development">
+        
+        <link rel="stylesheet" href="~/lib/bootstrap/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/ui-grid/ui-grid.min.css" />
+    </environment>
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="~/lib/popper/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="~/lib/bootstrap/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+        <script src="~/lib/angular-js/angular.min.js"></script>
+        <script src="~/lib/angular-js/angular-route.min.js"></script>
+        <script src="~/lib/angular-js/angular-cookies.min.js"></script>
+        <script src="~/lib/angular-js/angular-resource.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        <script src="~/lib/chart-js/Chart.min.js"></script>
+
+        <script src="~/lib/pdfmake/pdfmake.min.js"></script>
+        <script src="~/lib/pdfmake/vfs_fonts.js"></script>
+
+        <script src="~/lib/excel-builder/excel-builder.compiled.min.js"></script>
+
+        <script src="~/lib/ui-grid/ui-grid.min.js"></script>
+        <script src="~/lib/ui-grid/ui-grid.exporter.min.js"></script>
+
+        <script src="~/lib/angular-file-upload/ng-file-upload.min.js"></script>
+        <script src="~/lib/angular-file-upload/ng-file-upload-shim.min.js"></script>
+
+        <script src="~/lib/angular-chart/angular-chart.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+
+        <script src="~/lib/jquery/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="~/lib/popper/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="~/lib/bootstrap/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script src="~/lib/angular-js/angular.min.js"></script>
+        <script src="~/lib/angular-js/angular-route.min.js"></script>
+        <script src="~/lib/angular-js/angular-cookies.min.js"></script>
+        <script src="~/lib/angular-js/angular-resource.min.js"></script>
+        <script src="~/lib/chart-js/Chart.min.js"></script>
+
+        <script src="~/lib/pdfmake/pdfmake.min.js"></script>
+        <script src="~/lib/pdfmake/vfs_fonts.js"></script>
+
+        <script src="~/lib/excel-builder/excel-builder.compiled.min.js"></script>
+
+        <script src="~/lib/ui-grid/ui-grid.min.js"></script>
+        <script src="~/lib/ui-grid/ui-grid.exporter.min.js"></script>
+
+        <script src="~/lib/angular-file-upload/ng-file-upload.min.js"></script>
+        <script src="~/lib/angular-file-upload/ng-file-upload-shim.min.js"></script>
+
+        <script src="~/lib/angular-chart/angular-chart.min.js"></script>
+        <script src="~/js/site.min.js"></script>
+    </environment>
+
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover({
+                trigger: 'hover'
+            })
+        })
+    </script>
+</body>
+</html>

@@ -17,10 +17,10 @@ namespace TheRIPper.BL.RIP
         /// <param name="compositeRequirement">Composite requirements</param>
         /// <param name="compositeCountRequirement">Consequtive composite requirements</param>
         /// <returns>List of LRARModels</returns>
-        public static List<LRARModels> LRARSequence(int SequenceId, int window, int slidingSize, double compositeRequirement, int compositeCountRequirement) {
+        public static List<LRARModels> LRARSequence(ISequence sequence, int window, int slidingSize, double compositeRequirement, int compositeCountRequirement) {
             //This gets the LRARs (Large RIP Affected Regions for an entire sequence)
 
-            var RIPResults = RIPLogic.RIPSequence(SequenceId, window, slidingSize);
+            var RIPResults = RIPLogic.RIPSplitAndSequence(sequence, window, slidingSize);
 
             List<LRARModels> LRARs = new List<LRARModels>();
 
@@ -40,7 +40,7 @@ namespace TheRIPper.BL.RIP
                 else {
                     if (start != null && end != null && counter > compositeCountRequirement) {
                         //get the product substrate and composite for this region
-                        ISequence sequence = SequenceHelpers.SequenceHelpers.GetSequenceBySequenceId(SequenceId);
+                        
 
                         int size = (int)end - (int)start;
 
