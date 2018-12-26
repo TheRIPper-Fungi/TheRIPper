@@ -139,6 +139,16 @@ namespace TheRIPper.Db.Interactions.Files
                 return 0;
             }
         }
+
+
+        public string GetFileName(int FileId) {
+            try {
+                return db.Files.Where(w => w.Id == FileId).Select(s => s.FileName).FirstOrDefault();
+            }
+            catch (Exception) {
+                return "";
+            }
+        }
     }
 
     public class UserFile

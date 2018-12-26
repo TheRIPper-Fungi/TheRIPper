@@ -121,7 +121,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
                 .Select(s => SequenceHelpers.BuildSequenceFromString(s.SequenceName, s.SequenceContent))
                 .ToList();
 
-            var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, compositeCountRequirement);
+            var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, compositeCountRequirement, FileName);
 
             return new JsonResult(JsonConvert.SerializeObject(results)) { ContentType = "application/json", StatusCode = 200 };
         }

@@ -112,5 +112,7 @@ namespace TheRIPper.AngularJs.Controllers
             bool IsRemoved = file.RemoveFile();
             return new JsonResult(JsonConvert.SerializeObject(new { IsRemoved })) { ContentType = "application/json", StatusCode = 200 };
         }
+
+        
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using TheRIPper.BL.Models;
 using TheRIPper.BL.RIP;
 using TheRIPper.BL.SequenceHelpers;
+using TheRIPper.Db.Interactions.Files;
 using TheRIPper.Db.Interactions.Sequences;
 
 namespace TheRIPper.AngularJs.Controllers
@@ -126,8 +127,9 @@ namespace TheRIPper.AngularJs.Controllers
         public JsonResult RIPProfileFile(int FileId, int window, int slide, double compositeRequirement, int compositeCountRequirement) {
 
             List<ISequence> sequences = SequenceInteractions.GetISequencesFromDatabaseByFileId(FileId);
+            string FileName = new FileLogic().GetFileName(FileId);
             
-            var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, compositeCountRequirement);
+            var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, compositeCountRequirement,FileName);
 
             return new JsonResult(JsonConvert.SerializeObject(results)) { ContentType = "application/json", StatusCode = 200 };
         }

@@ -12,7 +12,7 @@ namespace TheRIPper.BL.RIP
     {
 
         //Make class models for the return
-        public static RIPProfileModels RIPFileProfile(List<ISequence> sequences, int window, int slide, double compositeRequirement, int compositeCountRequirement) {
+        public static RIPProfileModels RIPFileProfile(List<ISequence> sequences, int window, int slide, double compositeRequirement, int compositeCountRequirement, string FileName) {
             //List<int> sequenceIds = SequenceHelpers.SequenceHelpers.GetFileSequenceIds(FileId);
             
             //The below code focuses on the LRAR
@@ -67,7 +67,7 @@ namespace TheRIPper.BL.RIP
             decimal WindowsInvestigated = Math.Round((decimal)(totalBP / slide), 0);
 
             return new RIPProfileModels {
-                FileName = "Find suitable file name", //db.Files.Where(w => w.Id == FileId).Select(s => s.FileName).FirstOrDefault(),
+                FileName = FileName, //db.Files.Where(w => w.Id == FileId).Select(s => s.FileName).FirstOrDefault(),
                 FileBP = totalBP,
                 Count = CountOfLRAR,
                 SumAverage = Math.Round(LRARAverageSize, 2),
