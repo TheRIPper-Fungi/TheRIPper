@@ -35,3 +35,7 @@ body {
         display: none;
     }
 }
+
+p {
+text-justify:auto;
+}
