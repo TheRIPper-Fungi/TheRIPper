@@ -36,19 +36,31 @@ namespace TheRIPper.UI.NoDatabase.Controllers
         #region APIMethods
         [HttpGet]
         [Route("api/rip/sequence/{FileName}/{SequenceName}/{WindowSize?}/{SlidingSize?}")]
-        public JsonResult Test(string FileName, string SequenceName, int? WindowSize, int? SlidingSize) {
+        public JsonResult RIPSequence(string FileName, string SequenceName, int? WindowSize, int? SlidingSize) {
             if (WindowSize == null) { WindowSize = 1000; };
             if (SlidingSize == null) { SlidingSize = 500; };
 
-            var sequenceObject = SessionManagement
-                .SessionMethods.Get<FileModels>(HttpContext.Session, FileName)
-                .Sequences.Where(w => w.SequenceName == SequenceName)
-                .FirstOrDefault();
-            ISequence sequence = SequenceHelpers.BuildSequenceFromString(sequenceObject.SequenceName, sequenceObject.SequenceContent);
-
-            List<RIPModels> ripModels = RIPLogic.RIPSplitAndSequence(sequence, (int)WindowSize, (int)SlidingSize);
-
-            return new JsonResult(JsonConvert.SerializeObject(ripModels)) { ContentType = "application/json", StatusCode = 200 };
+            //In few cases the system fails to load the sequence,
+            //Below code sets it to null and if not found it will stay null
+            //If it stays null the code stops running and returns null
+            //If not it carries on as normal
+            SequenceModels sequenceObject = null;
+            try {
+                sequenceObject = SessionManagement
+                        .SessionMethods.Get<FileModels>(HttpContext.Session, FileName)
+                        .Sequences.Where(w => w.SequenceName == SequenceName)
+                        .FirstOrDefault();
+            }
+            catch (Exception) {
+            }
+            if (sequenceObject == null) {
+                return null;
+            }
+            else {
+                ISequence sequence = SequenceHelpers.BuildSequenceFromString(sequenceObject.SequenceName, sequenceObject.SequenceContent);
+                List<RIPModels> ripModels = RIPLogic.RIPSplitAndSequence(sequence, (int)WindowSize, (int)SlidingSize);
+                return new JsonResult(JsonConvert.SerializeObject(ripModels)) { ContentType = "application/json", StatusCode = 200 };
+            }
         }
 
         [HttpGet]
