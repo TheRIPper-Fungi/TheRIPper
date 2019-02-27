@@ -76,7 +76,7 @@
             if ($scope.SequenceName !== undefined) {
                 $scope.type = 's'; //S for Sequence
 
-                lrarFactory.getSequence($scope.FileName, $scope.SequenceName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement)
+                lrarFactory.getSequence($scope.FileName, $scope.SequenceName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.lrarGridOptions.data = data;
 
@@ -88,7 +88,7 @@
             else if ($scope.FileName !== undefined) {
                 $scope.type = 'f';
 
-                lrarFactory.getFile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement)
+                lrarFactory.getFile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.lrarGridOptions.data = data;
 

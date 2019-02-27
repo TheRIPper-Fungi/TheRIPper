@@ -134,8 +134,6 @@ namespace TheRIPper.BL.RIP
                 var GCContent = Math.Round(GCContentLogic.GCContentSingleSequenceTotal(ss.SubSequence), 2);
                 ripResult.GCContent = GCContent;
                 ripModels.Add(ripResult);
-
-                //csv += $"{ss.SequenceName}|{ss.Start}|{ss.End}|{rip.Product}|{rip.Substrate}|{rip.Composite}\n";
             });
 
             return ripModels;

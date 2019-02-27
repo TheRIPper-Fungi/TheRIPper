@@ -5,9 +5,9 @@
         .module('app')
         .controller('ripCtrl', ripCtrl);
 
-    ripCtrl.$inject = ['$scope', 'ripFactory', 'gcContentFactory', '$routeParams', 'uiGridConstants', '$timeout'];
+    ripCtrl.$inject = ['$scope', 'ripFactory', 'gcContentFactory', '$routeParams', 'uiGridConstants', '$timeout','$http'];
 
-    function ripCtrl($scope, ripFactory, gcContentFactory, $routeParams, uiGridConstants, $timeout) {
+    function ripCtrl($scope, ripFactory, gcContentFactory, $routeParams, uiGridConstants, $timeout,$http) {
         $scope.title = 'ripCtrl';
         $scope.ripIndex = {};
         $scope.startRange = 0;
@@ -18,6 +18,7 @@
         $scope.GCContentChart = {};
         $scope.window = 1000;
         $scope.slide = 500;
+        $scope.compositeRequirement = 0.01;
 
         $scope.ripGridOptions = {
             multiSelect: false,
@@ -283,15 +284,38 @@
         
 
         function calculateTotalRIP(data) {
+            if ($scope.checkGcContent === true && $scope.IsSequence !== true) {
 
-            let totalRowCount = data.length;
-            let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Substrate <= 0.9 }).length;
+                $http.get("api/rip/file/RIPTotalPercentageWithGcContentValidityTest/" + $routeParams.FileName + "/" + $scope.compositeRequirement+"/" + $scope.window + "/"+$scope.slide+"")
+                    .then(function (ret_data) {
+                        $scope.RIPPercentage = parseFloat(ret_data.data).toFixed(2);
+                        RIPPieChart();
+                    });
+                RIPPieChart();
+            }
+            else {
+                if ($scope.checkGcContent === true) {
 
-            let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
+                    let totalRowCount = data.length;
+                    let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Composite >= $scope.compositeRequirement && d.Substrate <= 0.9 && d.GCContent < $scope.GCContent }).length;
 
-            $scope.RIPPercentage = RIPPercentage.toFixed(2);
-            RIPPieChart();
+                    let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
 
+                    $scope.RIPPercentage = RIPPercentage.toFixed(2);
+                    RIPPieChart();
+                }
+                else {
+
+                    let totalRowCount = data.length;
+                    let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Substrate <= 0.9 && d.Composite >= $scope.compositeRequirement}).length;
+
+                    let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
+
+                    $scope.RIPPercentage = RIPPercentage.toFixed(2);
+                    RIPPieChart();
+                }
+            }
+            
         }
     }
 })();

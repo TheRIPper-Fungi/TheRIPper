@@ -10,6 +10,12 @@
     function ripProfileCtrl($scope, $routeParams, ripProfileFactory) {
         $scope.title = 'ripProfileCtrl';
         $scope.ripProfileLoading = true;
+
+        $scope.window = 1000;
+        $scope.slide = 500;
+        $scope.compositeRequirement = 0.01;
+        $scope.compositeCountRequirement = 7;
+
         activate();
 
 
@@ -83,13 +89,17 @@
 
         }
 
+        $scope.update = function () {
+            activate();
+        };
+
         function activate() {
             $scope.ripProfileLoading = true;
             $scope.FileName = $routeParams.FileName;
             $scope.SequenceId = $routeParams.SequenceId;
 
             if ($scope.FileName !== undefined) {
-                ripProfileFactory.getFileProfile($scope.FileName, 1000, 500, 0.01, 7)
+                ripProfileFactory.getFileProfile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.profile = data;
 

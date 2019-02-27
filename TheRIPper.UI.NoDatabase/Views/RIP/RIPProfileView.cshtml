@@ -1,4 +1,39 @@
-﻿<div ng-show="ripProfileLoading" style="display:flex;align-items:center;justify-content:center; height:600px">
+﻿<div class="container">
+    <h4>Settings</h4>
+    <table class="table table-fluid">
+        <tr>
+            <td>Window Size</td>
+            <td>
+                <input type="text" ng-model="window" placeholder="Window Size (1000bp)" class="form-control" />
+            </td>
+            <td>Slide Size</td>
+            <td>
+                <input type="text" ng-model="slide" placeholder="Sliding Size (500bp)" class="form-control" />
+            </td>
+            <td data-toggle="popover" data-content="Minimum composite RIP index value per window of the index chain">Composite cut-off value</td>
+            <td>
+                <input type="text" ng-model="compositeRequirement" class="form-control" />
+            </td>
+
+        </tr>
+        <tr>
+            <td data-toggle="popover" data-content="The total count of windows needed to be consecutively RIP affected to define a LRAR">Composite Index Chain</td>
+            <td>
+                <input type="text" ng-model="compositeCountRequirement" class="form-control" />
+            </td>
+            <td data-toggle="popover" data-content="Include in RIP analysis">Change in GC Content</td>
+            <td>
+                <input type="checkbox" ng-model="checkGcContent" name="name" value="Check GC Content" />
+            </td>
+        </tr>
+    </table>
+    <div style="display:flex;justify-content:center;">
+        <a href="" ng-click="update()" class="card-link">Update</a>
+    </div>
+    <hr />
+</div>
+
+<div ng-show="ripProfileLoading" style="display:flex;align-items:center;justify-content:center; height:600px">
     <h3>Running analysis</h3>
     <img src="~/images/DNA.svg" alt="Loading..." />
 </div>
@@ -8,6 +43,10 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         RIP profile: Statistics on RIP for entire sequenced genome assembly. The RIP profile includes statistics on the average RIP- product, substrate, composite index values as well as the average GC content for all Large RIP Affected Regions (LRARs) identified.
     </div>
+
+    
+
+
 
     <h2>{{profile.FileName}}</h2>
     <hr />

@@ -35,11 +35,25 @@
                     <td>
                         <input type="text" ng-model="slide" placeholder="Sliding Size (500bp)" class="form-control" />
                     </td>
+                </tr>
+                <tr>
+                    <td data-toggle="popover" data-content="Minimum composite RIP index value per window of the index chain">Composite cut-off value</td>
                     <td>
-                        <a href="" ng-click="UpdateWindowAndSlide()" class="btn btn-default btn-sm">Update</a>
+                        <input type="text" ng-model="compositeRequirement" class="form-control" />
+                    </td>
+
+                    <td data-toggle="popover" data-content="Include in RIP analysis">Change in GC Content</td>
+
+                    <td>
+                        <input type="checkbox" ng-model="checkGcContent" name="name" value="Check GC Content" />
                     </td>
                 </tr>
             </table>
+
+            <div style="display:flex;justify-content:center;">
+                <a href="" ng-click="UpdateWindowAndSlide()" class="btn btn-default btn-sm">Update</a>
+
+            </div>
 
             <h3 data-toggle="popover" data-content="Select sequence for fine scale RIP analysis">Select a Sequence</h3>
             <select ng-model="selectedSequence" ng-options="n for n in seqNamesUnique" class="form-control"></select>
@@ -57,9 +71,9 @@
                 </div>
             </div>
             <div style="display:flex;justify-content:space-around;margin-top:15px">
-                <input type="button" name="UpdateRange" ng-click="slideRange('backward')" value="Decrement" class="btn btn-outline-success" />
-                <input type="button" name="UpdateRange" ng-click="updateRange(startRange,endRange)" value="Update Range" class="btn btn-outline-success" />
-                <input type="button" name="UpdateRange" ng-click="slideRange('forward')" value="Increment" class="btn btn-outline-success" />
+                <input type="button" name="UpdateRange" ng-click="slideRange('backward')" value="Decrement" class="btn btn-outline-info" />
+                <input type="button" name="UpdateRange" ng-click="updateRange(startRange,endRange)" value="Update Range" class="btn btn-outline-info" />
+                <input type="button" name="UpdateRange" ng-click="slideRange('forward')" value="Increment" class="btn btn-outline-info" />
             </div>
 
             <div style="width:95%;">

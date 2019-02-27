@@ -17,7 +17,10 @@ namespace TheRIPper.BL.RIP
         /// <param name="compositeRequirement">Composite requirements</param>
         /// <param name="compositeCountRequirement">Consequtive composite requirements</param>
         /// <returns>List of LRARModels</returns>
-        public static List<LRARModels> LRARSequence(ISequence sequence, int window, int slidingSize, double compositeRequirement, int compositeCountRequirement) {
+        public static List<LRARModels> LRARSequence(ISequence sequence, int window, int slidingSize, double compositeRequirement, int compositeCountRequirement,bool checkGCContent) {
+            //Load the GCContent for the sequencec
+            double sequence_gc_content = GCContent.GCContentLogic.GCContentSingleSequenceTotal(sequence);
+            
             //This gets the LRARs (Large RIP Affected Regions for an entire sequence)
 
             var RIPResults = RIPLogic.RIPSplitAndSequence(sequence, window, slidingSize);
@@ -29,11 +32,16 @@ namespace TheRIPper.BL.RIP
             int? end = null;
 
             foreach (var RIPArea in RIPResults) {
-                if (RIPArea.Composite > compositeRequirement && start == null && RIPArea.Product >= 1.1 && RIPArea.Substrate <= 0.9) {
+                bool valid_lrar = false;
+
+                if(checkGCContent) valid_lrar = RIPArea.Composite > compositeRequirement && RIPArea.Product >= 1.1 && RIPArea.Substrate <= 0.9 && RIPArea.GCContent < sequence_gc_content;
+                else valid_lrar = RIPArea.Composite > compositeRequirement && RIPArea.Product >= 1.1 && RIPArea.Substrate <= 0.9;
+
+                if (start == null && valid_lrar) {
                     start = RIPArea.Start;
                     counter++;
                 }
-                else if (RIPArea.Composite > compositeRequirement && start != null && RIPArea.Product >= 1.1 && RIPArea.Substrate <= 0.9) {
+                else if (start != null &&valid_lrar) {
                     end = RIPArea.End;
                     counter++;
                 }

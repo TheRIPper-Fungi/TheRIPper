@@ -341,7 +341,7 @@ angular.module('home', [])
             if ($scope.SequenceName !== undefined) {
                 $scope.type = 's'; //S for Sequence
 
-                lrarFactory.getSequence($scope.FileName, $scope.SequenceName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement)
+                lrarFactory.getSequence($scope.FileName, $scope.SequenceName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.lrarGridOptions.data = data;
 
@@ -353,7 +353,7 @@ angular.module('home', [])
             else if ($scope.FileName !== undefined) {
                 $scope.type = 'f';
 
-                lrarFactory.getFile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement)
+                lrarFactory.getFile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.lrarGridOptions.data = data;
 
@@ -406,9 +406,9 @@ angular.module('home', [])
         .module('app')
         .controller('ripCtrl', ripCtrl);
 
-    ripCtrl.$inject = ['$scope', 'ripFactory', 'gcContentFactory', '$routeParams', 'uiGridConstants', '$timeout'];
+    ripCtrl.$inject = ['$scope', 'ripFactory', 'gcContentFactory', '$routeParams', 'uiGridConstants', '$timeout','$http'];
 
-    function ripCtrl($scope, ripFactory, gcContentFactory, $routeParams, uiGridConstants, $timeout) {
+    function ripCtrl($scope, ripFactory, gcContentFactory, $routeParams, uiGridConstants, $timeout,$http) {
         $scope.title = 'ripCtrl';
         $scope.ripIndex = {};
         $scope.startRange = 0;
@@ -419,6 +419,7 @@ angular.module('home', [])
         $scope.GCContentChart = {};
         $scope.window = 1000;
         $scope.slide = 500;
+        $scope.compositeRequirement = 0.01;
 
         $scope.ripGridOptions = {
             multiSelect: false,
@@ -684,15 +685,38 @@ angular.module('home', [])
         
 
         function calculateTotalRIP(data) {
+            if ($scope.checkGcContent === true && $scope.IsSequence !== true) {
 
-            let totalRowCount = data.length;
-            let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Substrate <= 0.9 }).length;
+                $http.get("api/rip/file/RIPTotalPercentageWithGcContentValidityTest/" + $routeParams.FileName + "/" + $scope.compositeRequirement+"/" + $scope.window + "/"+$scope.slide+"")
+                    .then(function (ret_data) {
+                        $scope.RIPPercentage = parseFloat(ret_data.data).toFixed(2);
+                        RIPPieChart();
+                    });
+                RIPPieChart();
+            }
+            else {
+                if ($scope.checkGcContent === true) {
 
-            let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
+                    let totalRowCount = data.length;
+                    let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Composite >= $scope.compositeRequirement && d.Substrate <= 0.9 && d.GCContent < $scope.GCContent }).length;
 
-            $scope.RIPPercentage = RIPPercentage.toFixed(2);
-            RIPPieChart();
+                    let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
 
+                    $scope.RIPPercentage = RIPPercentage.toFixed(2);
+                    RIPPieChart();
+                }
+                else {
+
+                    let totalRowCount = data.length;
+                    let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Substrate <= 0.9 && d.Composite >= $scope.compositeRequirement}).length;
+
+                    let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
+
+                    $scope.RIPPercentage = RIPPercentage.toFixed(2);
+                    RIPPieChart();
+                }
+            }
+            
         }
     }
 })();
@@ -709,6 +733,12 @@ angular.module('home', [])
     function ripProfileCtrl($scope, $routeParams, ripProfileFactory) {
         $scope.title = 'ripProfileCtrl';
         $scope.ripProfileLoading = true;
+
+        $scope.window = 1000;
+        $scope.slide = 500;
+        $scope.compositeRequirement = 0.01;
+        $scope.compositeCountRequirement = 7;
+
         activate();
 
 
@@ -782,13 +812,17 @@ angular.module('home', [])
 
         }
 
+        $scope.update = function () {
+            activate();
+        };
+
         function activate() {
             $scope.ripProfileLoading = true;
             $scope.FileName = $routeParams.FileName;
             $scope.SequenceId = $routeParams.SequenceId;
 
             if ($scope.FileName !== undefined) {
-                ripProfileFactory.getFileProfile($scope.FileName, 1000, 500, 0.01, 7)
+                ripProfileFactory.getFileProfile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.profile = data;
 
@@ -936,15 +970,15 @@ angular.module('home', [])
 
         return service;
 
-        function getSequence(FileName, SequenceName, window, slide, compositeRequirement, compositeCountRequirement) {
-            return $http.get('api/rip/lrar/sequence/' + FileName + '/' + SequenceName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement)
+        function getSequence(FileName, SequenceName, window, slide, compositeRequirement, compositeCountRequirement, checkGCContent) {
+            return $http.get('api/rip/lrar/sequence/' + FileName + '/' + SequenceName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement + '/' + checkGCContent)
                 .then(function (data) { return data; })
                 .then(function (data) { return JSON.parse(data.data); });
 
         }
 
-        function getFile(FileName, window, slide, compositeRequirement, compositeCountRequirement) {
-            return $http.get('api/rip/lrar/file/' + FileName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement)
+        function getFile(FileName, window, slide, compositeRequirement, compositeCountRequirement, checkGCContent) {
+            return $http.get('api/rip/lrar/file/' + FileName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement + '/' + checkGCContent)
                 .then(function (data) { return data; })
                 .then(function (data) { return JSON.parse(data.data); });
         }
@@ -1026,8 +1060,8 @@ angular.module('home', [])
 
         return service;
 
-        function getFileProfile(FileName, window, slide, compositeRequirement, compositeCountRequirement) {
-            return $http.get('api/rip/profile/file/' + FileName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement)
+        function getFileProfile(FileName, window, slide, compositeRequirement, compositeCountRequirement, checkGcContent) {
+            return $http.get('api/rip/profile/file/' + FileName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement + '/' + checkGcContent)
                 .then(function (data) { return data; })
                 .then(function (data) { return JSON.parse(data.data); });
         }
