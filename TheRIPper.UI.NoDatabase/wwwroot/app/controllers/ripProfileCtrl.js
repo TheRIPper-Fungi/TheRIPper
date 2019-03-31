@@ -14,6 +14,8 @@
         $scope.window = 1000;
         $scope.slide = 500;
         $scope.compositeRequirement = 0.01;
+        $scope.productRequirement = 1.1;
+        $scope.substrateRequirement = 0.9;
         $scope.compositeCountRequirement = 7;
 
         activate();
@@ -66,17 +68,17 @@
             var CSVContent = "data:text/csv;charset=utf-8,";
             CSVContent = CSVContent + "Name" + "," + data.FileName + "\r\n";
             CSVContent = CSVContent + "Genome Size (bp)" + "," + data.FileBP + "\r\n";
-            CSVContent = CSVContent + "Windows Investigated" + "," + data.WindowsInvestigated + "\r\n";
-            CSVContent = CSVContent + "GC content of entire genome (%)" + "," + data.TotalGCContent + "\r\n";
-            CSVContent = CSVContent + "RIP Positive Windows" + "," + data.RIPPositiveWindows + "\r\n";
-            CSVContent = CSVContent + "Total estimated Genome-wide RIP (%)" + "," + data.EstimatedGenomeRIP + "\r\n";
-            CSVContent = CSVContent + "Count Of LRAR" + "," + data.Count + "\r\n";
-            CSVContent = CSVContent + "Average size of LRAR (bp)" + "," + data.SumAverage + "\r\n";
-            CSVContent = CSVContent + "Average GC Content of LRAR (%)" + "," + data.LRARAverageGCContent + "\r\n";
-            CSVContent = CSVContent + "Sum Of all LRAR (bp)" + "," + data.SumOfLRAR + "\r\n";
-            CSVContent = CSVContent + "Product Average for LRAR" + "," + data.ProductAverage + "\r\n";
-            CSVContent = CSVContent + "Substrate Average for LRAR" + "," + data.SubstrateAverage + "\r\n";
-            CSVContent = CSVContent + "Composite Average for LRAR" + "," + data.CompositeAverage;
+            CSVContent = CSVContent + "Count of Genomic Windows Investigated" + "," + data.WindowsInvestigated + "\r\n";
+            CSVContent = CSVContent + "GC Content of Genome Assembly (%)" + "," + data.TotalGCContent + "\r\n";
+            CSVContent = CSVContent + "Number of RIP Affected Windows" + "," + data.RIPPositiveWindows + "\r\n";
+            CSVContent = CSVContent + "RIP Affected Genomic Proportion (%)" + "," + data.EstimatedGenomeRIP + "\r\n";
+            CSVContent = CSVContent + "Count of LRARs" + "," + data.Count + "\r\n";
+            CSVContent = CSVContent + "Average Size of LRARs (bp)" + "," + data.SumAverage + "\r\n";
+            CSVContent = CSVContent + "Average GC Content of LRARs (%)" + "," + data.LRARAverageGCContent + "\r\n";
+            CSVContent = CSVContent + "Genomic Proportion of LRARs (bp)" + "," + data.SumOfLRAR + "\r\n";
+            CSVContent = CSVContent + "Product Value for LRARs" + "," + data.ProductAverage + "\r\n";
+            CSVContent = CSVContent + "Substrate Value for LRARs" + "," + data.SubstrateAverage + "\r\n";
+            CSVContent = CSVContent + "Composite Value for LRARs" + "," + data.CompositeAverage;
 
             var encodedUri = encodeURI(CSVContent);
             var link = document.createElement("a");
@@ -99,7 +101,7 @@
             $scope.SequenceId = $routeParams.SequenceId;
 
             if ($scope.FileName !== undefined) {
-                ripProfileFactory.getFileProfile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
+                ripProfileFactory.getFileProfile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.productRequirement, $scope.substrateRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.profile = data;
 

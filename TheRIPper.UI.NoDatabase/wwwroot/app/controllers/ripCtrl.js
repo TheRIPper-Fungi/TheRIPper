@@ -19,6 +19,8 @@
         $scope.window = 1000;
         $scope.slide = 500;
         $scope.compositeRequirement = 0.01;
+        $scope.productRequirement = 1.1;
+        $scope.substrateRequirement = 0.9;
 
         $scope.ripGridOptions = {
             multiSelect: false,
@@ -286,7 +288,7 @@
         function calculateTotalRIP(data) {
             if ($scope.checkGcContent === true && $scope.IsSequence !== true) {
 
-                $http.get("api/rip/file/RIPTotalPercentageWithGcContentValidityTest/" + $routeParams.FileName + "/" + $scope.compositeRequirement+"/" + $scope.window + "/"+$scope.slide+"")
+                $http.get("api/rip/file/RIPTotalPercentageWithGcContentValidityTest/" + $routeParams.FileName + "/" + $scope.compositeRequirement + "/" + $scope.productRequirement + '/' + $scope.substrateRequirement + '/' + $scope.window + "/" + $scope.slide + "")
                     .then(function (ret_data) {
                         $scope.RIPPercentage = parseFloat(ret_data.data).toFixed(2);
                         RIPPieChart();
@@ -297,7 +299,7 @@
                 if ($scope.checkGcContent === true) {
 
                     let totalRowCount = data.length;
-                    let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Composite >= $scope.compositeRequirement && d.Substrate <= 0.9 && d.GCContent < $scope.GCContent }).length;
+                    let RIPDataCount = data.filter(d => { return d.Product >= $scope.productRequirement && d.Composite >= $scope.compositeRequirement && d.Substrate <= $scope.substrateRequirement && d.GCContent < $scope.GCContent }).length;
 
                     let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
 
@@ -307,7 +309,7 @@
                 else {
 
                     let totalRowCount = data.length;
-                    let RIPDataCount = data.filter(d => { return d.Product >= 1.1 && d.Substrate <= 0.9 && d.Composite >= $scope.compositeRequirement}).length;
+                    let RIPDataCount = data.filter(d => { return d.Product >= $scope.productRequirement && d.Substrate <= $scope.substrateRequirement && d.Composite >= $scope.compositeRequirement }).length;
 
                     let RIPPercentage = (RIPDataCount / totalRowCount) * 100;
 

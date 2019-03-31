@@ -17,7 +17,7 @@ namespace TheRIPper.BL.RIP
         /// <param name="compositeRequirement">Composite requirements</param>
         /// <param name="compositeCountRequirement">Consequtive composite requirements</param>
         /// <returns>List of LRARModels</returns>
-        public static List<LRARModels> LRARSequence(ISequence sequence, int window, int slidingSize, double compositeRequirement, int compositeCountRequirement,bool checkGCContent) {
+        public static List<LRARModels> LRARSequence(ISequence sequence, int window, int slidingSize, double compositeRequirement,double productRequirement,double substrateRequirement, int compositeCountRequirement,bool checkGCContent) {
             //Load the GCContent for the sequencec
             double sequence_gc_content = GCContent.GCContentLogic.GCContentSingleSequenceTotal(sequence);
             
@@ -34,8 +34,8 @@ namespace TheRIPper.BL.RIP
             foreach (var RIPArea in RIPResults) {
                 bool valid_lrar = false;
 
-                if(checkGCContent) valid_lrar = RIPArea.Composite > compositeRequirement && RIPArea.Product >= 1.1 && RIPArea.Substrate <= 0.9 && RIPArea.GCContent < sequence_gc_content;
-                else valid_lrar = RIPArea.Composite > compositeRequirement && RIPArea.Product >= 1.1 && RIPArea.Substrate <= 0.9;
+                if(checkGCContent) valid_lrar = RIPArea.Composite > compositeRequirement && RIPArea.Product >= productRequirement && RIPArea.Substrate <= substrateRequirement && RIPArea.GCContent < sequence_gc_content;
+                else valid_lrar = RIPArea.Composite > compositeRequirement && RIPArea.Product >= productRequirement && RIPArea.Substrate <= substrateRequirement;
 
                 if (start == null && valid_lrar) {
                     start = RIPArea.Start;

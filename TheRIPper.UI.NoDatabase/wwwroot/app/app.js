@@ -58,31 +58,15 @@ app.config(['$provide', '$routeProvider', '$httpProvider', '$logProvider', funct
         controller: 'backgroundCtrl'
     });
 
+    $routeProvider.when('/contact', {
+        templateUrl: 'App/Contact',
+        controller: 'contactCtrl'
+    });
+
     $routeProvider.when('/dashboard', {
         templateUrl: 'Dashboard/Index',
         controller: 'dashboardCtrl'
     });
-
-
-    //$routeProvider.when('/register', {
-    //    templateUrl: 'api/account/Register',
-    //    controller: 'registerCtrl'
-    //});
-
-    //$routeProvider.when('/signin/:message?', {
-    //    templateUrl: 'api/account/SignIn',
-    //    controller: 'signInCtrl'
-    //});
-
-    //$routeProvider.when('/forgotpassword', {
-    //    templateUrl: 'api/account/Forgot',
-    //    controller: 'forgotCtrl'
-    //});
-
-    //$routeProvider.when('/reset/:code', {
-    //    templateUrl: 'api/account/Reset',
-    //    controller: 'resetCtrl'
-    //});
 
     $routeProvider.when('/rip', {
         templateUrl: 'RIP/RIPSequenceView',

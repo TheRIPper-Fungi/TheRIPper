@@ -16,6 +16,8 @@
         $scope.window = 1000;
         $scope.slide = 500;
         $scope.compositeRequirement = 0.01;
+        $scope.productRequirement = 1.1;
+        $scope.substrateRequirement = 0.9;
         $scope.compositeCountRequirement = 7;
 
         activate();
@@ -76,7 +78,7 @@
             if ($scope.SequenceName !== undefined) {
                 $scope.type = 's'; //S for Sequence
 
-                lrarFactory.getSequence($scope.FileName, $scope.SequenceName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
+                lrarFactory.getSequence($scope.FileName, $scope.SequenceName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.productRequirement, $scope.substrateRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.lrarGridOptions.data = data;
 
@@ -88,7 +90,7 @@
             else if ($scope.FileName !== undefined) {
                 $scope.type = 'f';
 
-                lrarFactory.getFile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
+                lrarFactory.getFile($scope.FileName, $scope.window, $scope.slide, $scope.compositeRequirement, $scope.productRequirement, $scope.substrateRequirement, $scope.compositeCountRequirement, $scope.checkGcContent)
                     .then(function (data) {
                         $scope.lrarGridOptions.data = data;
 

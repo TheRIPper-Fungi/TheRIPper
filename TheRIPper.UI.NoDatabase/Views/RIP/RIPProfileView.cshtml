@@ -1,5 +1,5 @@
 ﻿<div class="container">
-    <h4>Settings</h4>
+    <h4>Parameters</h4>
     <table class="table table-fluid">
         <tr>
             <td>Window Size</td>
@@ -10,13 +10,22 @@
             <td>
                 <input type="text" ng-model="slide" placeholder="Sliding Size (500bp)" class="form-control" />
             </td>
-            <td data-toggle="popover" data-content="Minimum composite RIP index value per window of the index chain">Composite cut-off value</td>
+            <td data-toggle="popover" data-content="Composite must be higher than this value">Minimum Composite</td>
             <td>
                 <input type="text" ng-model="compositeRequirement" class="form-control" />
             </td>
 
+            <td data-toggle="popover" data-content="Product must be higher than this value">Minimum Product</td>
+            <td>
+                <input type="text" ng-model="productRequirement" class="form-control" />
+            </td>
         </tr>
         <tr>
+            <td data-toggle="popover" data-content="The substrate must be smaller than this value">Maximum Substrate</td>
+            <td>
+                <input type="text" ng-model="substrateRequirement" class="form-control" />
+            </td>
+
             <td data-toggle="popover" data-content="The total count of windows needed to be consecutively RIP affected to define a LRAR">Composite Index Chain</td>
             <td>
                 <input type="text" ng-model="compositeCountRequirement" class="form-control" />
@@ -132,50 +141,50 @@
             </tr>
 
             <tr>
-                <td>Total Windows Investigated</td>
+                <td>Count of Genomic Windows Investigated</td>
                 <td>{{profile.WindowsInvestigated}}</td>
             </tr>
 
             <tr>
-                <td>GC Content of Entire Genome (%)</td>
+                <td>GC Content of Genome Assembly (%)</td>
                 <td>{{profile.TotalGCContent}}</td>
             </tr>
             <tr>
-                <td>RIP Positive Windows</td>
+                <td>Number of RIP Affected Windows</td>
                 <td>{{profile.RIPPositiveWindows}} </td>
             </tr>
             <tr>
-                <td>Total Estimated Genome-Wide RIP (%)</td>
+                <td>RIP Affected Genomic Proportion (%)</td>
                 <td>{{profile.EstimatedGenomeRIP}}</td>
             </tr>
             <tr>
-                <td>Count of LRAR</td>
+                <td>Count of LRARs</td>
                 <td>{{profile.Count}}</td>
             </tr>
             <tr>
-                <td>Average Size of LRAR (bp)</td>
+                <td>Average Size of LRARs (bp)</td>
                 <td>{{profile.SumAverage}}</td>
             </tr>
 
             <tr>
-                <td>Average GC Content of LRAR (%)</td>
+                <td>Average GC Content of LRARs (%)</td>
                 <td>{{profile.LRARAverageGCContent}}</td>
             </tr>
 
             <tr>
-                <td>Sum of All LRAR (bp)</td>
+                <td>Genomic Proportion of LRARs (bp)</td>
                 <td>{{profile.SumOfLRAR}}</td>
             </tr>
             <tr>
-                <td>Product Average for LRAR</td>
+                <td>Product Value for LRARs</td>
                 <td>{{profile.ProductAverage}}</td>
             </tr>
             <tr>
-                <td>Substrate Average for LRAR</td>
+                <td>Substrate Value for LRARs</td>
                 <td>{{profile.SubstrateAverage}}</td>
             </tr>
             <tr>
-                <td>Composite Average for LRAR</td>
+                <td>Composite Value for LRARs</td>
                 <td>{{profile.CompositeAverage}}</td>
             </tr>
         </table>

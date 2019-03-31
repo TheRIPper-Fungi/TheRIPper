@@ -15,15 +15,15 @@
 
         return service;
 
-        function getSequence(FileName, SequenceName, window, slide, compositeRequirement, compositeCountRequirement, checkGCContent) {
-            return $http.get('api/rip/lrar/sequence/' + FileName + '/' + SequenceName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement + '/' + checkGCContent)
+        function getSequence(FileName, SequenceName, window, slide, compositeRequirement, productRequirement, substrateRequirement, compositeCountRequirement, checkGCContent) {
+            return $http.get('api/rip/lrar/sequence/' + FileName + '/' + SequenceName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + productRequirement + '/' + substrateRequirement + '/' + compositeCountRequirement + '/' + checkGCContent)
                 .then(function (data) { return data; })
                 .then(function (data) { return JSON.parse(data.data); });
 
         }
 
-        function getFile(FileName, window, slide, compositeRequirement, compositeCountRequirement, checkGCContent) {
-            return $http.get('api/rip/lrar/file/' + FileName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + compositeCountRequirement + '/' + checkGCContent)
+        function getFile(FileName, window, slide, compositeRequirement, productRequirement, substrateRequirement, compositeCountRequirement, checkGCContent) {
+            return $http.get('api/rip/lrar/file/' + FileName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + productRequirement + '/' + substrateRequirement + '/' + compositeCountRequirement + '/' + checkGCContent)
                 .then(function (data) { return data; })
                 .then(function (data) { return JSON.parse(data.data); });
         }

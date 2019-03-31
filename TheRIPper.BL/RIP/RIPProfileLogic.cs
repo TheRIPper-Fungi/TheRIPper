@@ -12,14 +12,14 @@ namespace TheRIPper.BL.RIP
     {
 
         //Make class models for the return
-        public static RIPProfileModels RIPFileProfile(List<ISequence> sequences, int window, int slide, double compositeRequirement, int compositeCountRequirement, string FileName, bool checkGcContent) {
+        public static RIPProfileModels RIPFileProfile(List<ISequence> sequences, int window, int slide, double compositeRequirement, double productRequirement, double substrateRequirement, int compositeCountRequirement, string FileName, bool checkGcContent) {
             //List<int> sequenceIds = SequenceHelpers.SequenceHelpers.GetFileSequenceIds(FileId);
             
             //The below code focuses on the LRAR
             List<LRARModels> LRARs = new List<LRARModels>();
             //TODO: here
             Enumerable.Range(0, sequences.Count()).AsParallel().ForAll(f => {
-                var LRAR_Range = LRARLogic.LRARSequence(sequences[f], window, slide, compositeRequirement, compositeCountRequirement,checkGcContent);
+                var LRAR_Range = LRARLogic.LRARSequence(sequences[f], window, slide, compositeRequirement, productRequirement, substrateRequirement, compositeCountRequirement,checkGcContent);
                 LRARs.AddRange(LRAR_Range);
             });
 
@@ -60,11 +60,11 @@ namespace TheRIPper.BL.RIP
                 foreach (var seq in sequences) {
                     string current_seq_name = seq.ID;
                     double current_seq_gc_content = GCContent.GCContentLogic.GCContentSingleSequenceTotal(seq);
-                    int current_valid_seq_count = RIPregions.Where(w => w.SequenceName == seq.ID && w.Composite >= compositeRequirement && w.Product >= 1.1 && w.Substrate <= 0.9 && w.GCContent < current_seq_gc_content).Count();
+                    int current_valid_seq_count = RIPregions.Where(w => w.SequenceName == seq.ID && w.Composite >= compositeRequirement && w.Product >= productRequirement && w.Substrate <= substrateRequirement && w.GCContent < current_seq_gc_content).Count();
                     countPositiveComposite += current_valid_seq_count;
                 }
             }
-            else countPositiveComposite = RIPregions.Where(w => w.Composite >= compositeRequirement && w.Product >= 1.1 && w.Substrate <= 0.9).Count();
+            else countPositiveComposite = RIPregions.Where(w => w.Composite >= compositeRequirement && w.Product >= productRequirement && w.Substrate <= substrateRequirement).Count();
 
 
             double RIPPercentageGenome = ((double)countPositiveComposite / (double)RIPregions.Count) * (double)100;

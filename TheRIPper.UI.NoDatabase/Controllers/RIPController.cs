@@ -86,8 +86,8 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 
 
         [HttpGet]
-        [Route("api/rip/lrar/sequence/{FileName}/{SequenceName}/{window}/{slide}/{compositeRequirement}/{compositeCountRequirement}/{checkGCContent}")]
-        public JsonResult LRARSequence(string FileName,string SequenceName, int window, int slide, double compositeRequirement, int compositeCountRequirement,bool checkGCContent) {
+        [Route("api/rip/lrar/sequence/{FileName}/{SequenceName}/{window}/{slide}/{compositeRequirement}/{productRequirement}/{substrateRequirement}/{compositeCountRequirement}/{checkGCContent}")]
+        public JsonResult LRARSequence(string FileName,string SequenceName, int window, int slide, double compositeRequirement,double productRequirement,double substrateRequirement, int compositeCountRequirement,bool checkGCContent) {
 
             ISequence sequence = SessionManagement
                 .SessionMethods
@@ -97,14 +97,14 @@ namespace TheRIPper.UI.NoDatabase.Controllers
                 .Select(s => SequenceHelpers.BuildSequenceFromString(s.SequenceName, s.SequenceContent))
                 .FirstOrDefault();
 
-            List<LRARModels> LRARs = LRARLogic.LRARSequence(sequence, window, slide, compositeRequirement, compositeCountRequirement, checkGCContent);
+            List<LRARModels> LRARs = LRARLogic.LRARSequence(sequence, window, slide, compositeRequirement,productRequirement,substrateRequirement, compositeCountRequirement, checkGCContent);
 
             return new JsonResult(JsonConvert.SerializeObject(LRARs)) { ContentType = "application/json", StatusCode = 200 };
         }
 
         [HttpGet]
-        [Route("api/rip/lrar/file/{FileName}/{window}/{slide}/{compositeRequirement}/{compositeCountRequirement}/{checkGCContent}")]
-        public JsonResult LRARFile(string FileName, int window, int slide, double compositeRequirement, int compositeCountRequirement, bool checkGCContent) {
+        [Route("api/rip/lrar/file/{FileName}/{window}/{slide}/{compositeRequirement}/{productRequirement}/{substrateRequirement}/{compositeCountRequirement}/{checkGCContent}")]
+        public JsonResult LRARFile(string FileName, int window, int slide, double compositeRequirement,double productRequirement,double substrateRequirement, int compositeCountRequirement, bool checkGCContent) {
             List<ISequence> sequences = SessionManagement
                 .SessionMethods
                 .Get<FileModels>(HttpContext.Session, FileName)
@@ -116,15 +116,15 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 
             Enumerable.Range(0, sequences.Count).AsParallel().ForAll(f => {
                 ISequence sequence = sequences[f];
-                LRARs.AddRange(LRARLogic.LRARSequence(sequence, window, slide, compositeRequirement, compositeCountRequirement, checkGCContent));
+                LRARs.AddRange(LRARLogic.LRARSequence(sequence, window, slide, compositeRequirement,productRequirement,substrateRequirement, compositeCountRequirement, checkGCContent));
             });
 
             return new JsonResult(JsonConvert.SerializeObject(LRARs)) { ContentType = "application/json", StatusCode = 200 };
         }
 
         [HttpGet]
-        [Route("api/rip/profile/file/{FileName}/{window}/{slide}/{compositeRequirement}/{compositeCountRequirement}/{checkGcContent}")]
-        public JsonResult RIPProfileFile(string FileName, int window, int slide, double compositeRequirement, int compositeCountRequirement,bool checkGcContent) {
+        [Route("api/rip/profile/file/{FileName}/{window}/{slide}/{compositeRequirement}/{productRequirement}/{substrateRequirement}/{compositeCountRequirement}/{checkGcContent}")]
+        public JsonResult RIPProfileFile(string FileName, int window, int slide, double compositeRequirement,double productRequirement, double substrateRequirement, int compositeCountRequirement,bool checkGcContent) {
 
             List<ISequence> sequences = SessionManagement
                 .SessionMethods
@@ -133,14 +133,14 @@ namespace TheRIPper.UI.NoDatabase.Controllers
                 .Select(s => SequenceHelpers.BuildSequenceFromString(s.SequenceName, s.SequenceContent))
                 .ToList();
 
-            var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, compositeCountRequirement, FileName, checkGcContent);
+            var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, productRequirement, substrateRequirement, compositeCountRequirement, FileName, checkGcContent);
 
             return new JsonResult(JsonConvert.SerializeObject(results)) { ContentType = "application/json", StatusCode = 200 };
         }
 
         [HttpGet]
-        [Route("api/rip/file/RIPTotalPercentageWithGcContentValidityTest/{FileName}/{CompositeRequirement}/{WindowSize?}/{SlidingSize?}")]
-        public JsonResult RIPTotalPercentageWithGcContentValidityTest(string FileName,double CompositeRequirement, int? WindowSize, int? SlidingSize) {
+        [Route("api/rip/file/RIPTotalPercentageWithGcContentValidityTest/{FileName}/{CompositeRequirement}/{ProductRequirement}/{SubstrateRequirement}/{WindowSize?}/{SlidingSize?}")]
+        public JsonResult RIPTotalPercentageWithGcContentValidityTest(string FileName,double CompositeRequirement, double ProductRequirement, double SubstrateRequirement, int? WindowSize, int? SlidingSize) {
             if (WindowSize == null) { WindowSize = 1000; };
             if (SlidingSize == null) { SlidingSize = 500; };
 
@@ -157,7 +157,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
             foreach (var seq in sequences) {
                 string current_seq_name = seq.ID;
                 double current_seq_gc_content = BL.GCContent.GCContentLogic.GCContentSingleSequenceTotal(seq);
-                int current_valid_seq_count = RIPregions.Where(w => w.SequenceName == current_seq_name && w.Composite >= CompositeRequirement && w.Product >= 1.1 && w.Substrate <= 0.9 && w.GCContent < current_seq_gc_content).Count();
+                int current_valid_seq_count = RIPregions.Where(w => w.SequenceName == current_seq_name && w.Composite >= CompositeRequirement && w.Product >= ProductRequirement && w.Substrate <= SubstrateRequirement && w.GCContent < current_seq_gc_content).Count();
                 countPositiveComposite += current_valid_seq_count;
             }
 

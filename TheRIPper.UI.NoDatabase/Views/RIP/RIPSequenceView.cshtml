@@ -24,7 +24,7 @@
 
             <h2>RIP Analysis</h2>
             <hr />
-            <h3>Settings</h3>
+            <h3>Parameters</h3>
             <table class="table table-responsive">
                 <tr>
                     <td>Window Size</td>
@@ -37,7 +37,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td data-toggle="popover" data-content="Minimum composite RIP index value per window of the index chain">Composite cut-off value</td>
+                    <td data-toggle="popover" data-content="Composite must be higher than this value">Minimum Composite</td>
                     <td>
                         <input type="text" ng-model="compositeRequirement" class="form-control" />
                     </td>
@@ -46,6 +46,17 @@
 
                     <td>
                         <input type="checkbox" ng-model="checkGcContent" name="name" value="Check GC Content" />
+                    </td>
+                </tr>
+                <tr>
+                    <td data-toggle="popover" data-content="Product must be higher than this value">Minimum Product</td>
+                    <td>
+                        <input type="text" ng-model="productRequirement" class="form-control" />
+                    </td>
+
+                    <td data-toggle="popover" data-content="The substrate must be smaller than this value">Maximum Substrate</td>
+                    <td>
+                        <input type="text" ng-model="substrateRequirement" class="form-control" />
                     </td>
                 </tr>
             </table>
