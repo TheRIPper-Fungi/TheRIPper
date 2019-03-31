@@ -15,7 +15,7 @@
         $scope.slide = 500;
         $scope.compositeRequirement = 0.01;
         $scope.productRequirement = 1.1;
-        $scope.substrateRequirement = 0.9;
+        $scope.substrateRequirement = 0.75;
         $scope.compositeCountRequirement = 7;
 
         activate();
@@ -51,7 +51,7 @@
             columnDefs: [
                 { field: 'Count', width: 150 },
                 { field: 'FileBP', width: 150 },
-                { field: 'ProductAverage', width: 150 },
+                { field: 'ProductAverage', width: 150},
                 { field: 'SubstrateAverage', width: 150 },
                 { field: 'CompositeAverage', width: 150 },
                 { field: 'SumOfLRAR', width: 150 },

@@ -17,7 +17,7 @@
         $scope.slide = 500;
         $scope.compositeRequirement = 0.01;
         $scope.productRequirement = 1.1;
-        $scope.substrateRequirement = 0.9;
+        $scope.substrateRequirement = 0.75;
         $scope.compositeCountRequirement = 7;
 
         activate();
@@ -53,14 +53,94 @@
 
             columnDefs: [
                 { field: 'Name', width: 150 },
-                { field: 'Start', width: 150, type: 'number' },
-                { field: 'End', width: 150, type: 'number' },
-                { field: 'Size', aggregationType: uiGridConstants.aggregationTypes.sum, width: 150, type: 'number' },
-                { field: 'Count', displayName: "Count Of Windows", aggregationType: uiGridConstants.aggregationTypes.sum, width: 75, type: 'number' },
-                { field: 'Product', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number' },
-                { field: 'Substrate', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number' },
-                { field: 'Composite', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number' },
-                { field: 'GCContent', footerCellFilter: 'number:2', displayName: "GC Content", aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number' }
+                {
+                    field: 'Start', width: 150, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'End', width: 150, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'Size', aggregationType: uiGridConstants.aggregationTypes.sum, width: 150, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'Count', displayName: "Count Of Windows", aggregationType: uiGridConstants.aggregationTypes.sum, width: 75, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ]  },
+                {
+                    field: 'Product', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'Substrate', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'Composite', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'GCContent', footerCellFilter: 'number:2', displayName: "GC Content", aggregationType: uiGridConstants.aggregationTypes.avg, width: 75, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] }
             ],
             onRegisterApi: function (gridApi) {
                 //$scope.clientTargetsGridApi = gridApi;

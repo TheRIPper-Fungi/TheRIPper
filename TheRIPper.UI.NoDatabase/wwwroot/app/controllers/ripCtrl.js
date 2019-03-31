@@ -20,7 +20,7 @@
         $scope.slide = 500;
         $scope.compositeRequirement = 0.01;
         $scope.productRequirement = 1.1;
-        $scope.substrateRequirement = 0.9;
+        $scope.substrateRequirement = 0.75;
 
         $scope.ripGridOptions = {
             multiSelect: false,
@@ -54,12 +54,72 @@
 
             columnDefs: [
                 { field: 'SequenceName', width: 270 },
-                { field: 'Start', width: 80, type: 'number' },
-                { field: 'End', width: 80, type: 'number' },
-                { field: 'Product', type: 'number', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 120 },
-                { field: 'Substrate', type: 'number', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 120 },
-                { field: 'Composite', type: 'number', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 120 },
-                { field: 'GCContent', type: 'number', footerCellFilter: 'number:2', displayName: "GC Content", aggregationType: uiGridConstants.aggregationTypes.avg, width: 120 }
+                {
+                    field: 'Start', width: 80, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'End', width: 80, type: 'number', filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'Product', type: 'number', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 120, filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'Substrate', type: 'number', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 120, filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'Composite', type: 'number', footerCellFilter: 'number:2', aggregationType: uiGridConstants.aggregationTypes.avg, width: 120, filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] },
+                {
+                    field: 'GCContent', type: 'number', footerCellFilter: 'number:2', displayName: "GC Content", aggregationType: uiGridConstants.aggregationTypes.avg, width: 120, filters: [
+                        {
+                            condition: uiGridConstants.filter.GREATER_THAN,
+                            placeholder: '>'
+                        },
+                        {
+                            condition: uiGridConstants.filter.LESS_THAN,
+                            placeholder: '<'
+                        }
+                    ] }
             ],
             onRegisterApi: function (gridApi) {
                 //$scope.clientTargetsGridApi = gridApi;

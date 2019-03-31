@@ -20,9 +20,11 @@
             <td>{{sequence.Length}}</td>
             <td>{{sequence.GCContent}}</td>
             <td style="display:flex;flex-direction:row">
-                <a href="#/rip/sequence/{{FileName}}/{{sequence.Id}}" class="btn btn-outline-info" title="Calculate RIP and RIP statistics for Large RIP Affected Regions of the contig or scaffold assembly">RIP Sequence</a>
-                <a href="#/rip/lrar/sequence/{{FileName}}/{{sequence.Id}}" class="btn btn-outline-info" title="Calculate RIP and RIP statistics for Large RIP Affected Regions of the contig or scaffold assembly">Calculate LRAR</a>
-            </td>
+                <div class="btn-group" role="group" aria-label="Actions">
+                    <a href="#/rip/sequence/{{FileName}}/{{sequence.Id}}" class="btn btn-outline-info" title="Calculate RIP and RIP statistics for Large RIP Affected Regions of the contig or scaffold assembly">RIP Sequence</a>
+                    <a href="#/rip/lrar/sequence/{{FileName}}/{{sequence.Id}}" class="btn btn-outline-info" title="Calculate RIP and RIP statistics for Large RIP Affected Regions of the contig or scaffold assembly">Calculate LRAR</a>
+           </div>
+                    </td>
         </tr>
     </table>
 </div>
