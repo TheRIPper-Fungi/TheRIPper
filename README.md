@@ -19,11 +19,11 @@ The RIPper has no account or database requirements.
 
 There are a few pre-built distributions of The RIPper available, download the zip file that correspondes to your OS and run the TheRIPPer executable.
 
-[Windows 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-Windows-NoDb/Windows.64bit.NoDatabase.zip)
+[Windows 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-Windows-NoDb/Windows.zip)
 
-[Linux 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-Linux-NoDb/Linux.64bit.NoDatabase.zip)
+[Linux 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-Linux-NoDb/Linux.zip)
 
-[OSX 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-OSX-NoDb/OSX.64bit.NoDatabase.zip)
+[OSX 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-OSX-NoDb/OSX.zip)
 
 ## Licence
 
