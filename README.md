@@ -25,6 +25,16 @@ There are a few pre-built distributions of The RIPper available, download the zi
 
 [OSX 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-OSX-NoDb/OSX.zip)
 
+### Instructions for Linux users
+
+1.  apt update && apt install wget unzip -y
+2.  wget https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-Linux-NoDb/Linux.zip
+3.  unzip Linux.zip
+4.  cd Linux/
+5.  chmod +x TheRIPper
+6.  ./TheRIPper
+
+
 ## Licence
 
 Full licence available [here](https://github.com/TheRIPper-Fungi/TheRIPPer/blob/master/LICENSE)
