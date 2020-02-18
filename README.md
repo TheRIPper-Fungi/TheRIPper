@@ -25,7 +25,7 @@ There are a few pre-built distributions of The RIPper available, download the zi
 
 [OSX 64bit](https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-OSX-NoDb/OSX.zip)
 
-### Instructions for Linux users
+### Instructions for Debian based linux users
 
 1.  apt update && apt install wget unzip -y
 2.  wget https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-Linux-NoDb/Linux.zip
