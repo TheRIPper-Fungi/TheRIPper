@@ -80,6 +80,7 @@
                 <div class="col-xs-12 col-md-6">
                     <input type="number" ng-model="endRange" value="" class="form-control" />
                 </div>
+                
             </div>
             <div style="display:flex;justify-content:space-around;margin-top:15px">
                 <input type="button" name="UpdateRange" ng-click="slideRange('backward')" value="Decrement" class="btn btn-outline-info" />
@@ -109,6 +110,14 @@
                     <canvas class="chart chart-pie" chart-data="GCContentChart.data"
                             chart-labels="GCContentChart.labels" chart-series="GCContentChart.series" chart-options="GCContentChart.options" chart-colors="GCContentChart.colors"></canvas>
                 </div>
+            </div>
+            <hr />
+            <div class="col-xs-12 col-md-12" ng-if="IsFile">
+                <a href="/api/gff3/file/{{fileName}}/{{window}}/{{slide}}/{{compositeRequirement}}/{{productRequirement}}/{{substrateRequirement}}/0/false" download class="btn btn-outline-info w-100" style="margin-bottom:15px">Export GFF3 RIP data (Genome)</a>
+                
+            </div>
+            <div class="col-xs-12 col-md-12" ng-if="IsSequence || selectedSequence">
+                <a href="/api/gff3/sequence/{{fileName}}/{{selectedSequence}}/{{window}}/{{slide}}/{{compositeRequirement}}/{{productRequirement}}/{{substrateRequirement}}/0/false" download class="btn btn-outline-info w-100">Export GFF3 RIP data (Sequence)</a>
             </div>
         </div>
     </div>

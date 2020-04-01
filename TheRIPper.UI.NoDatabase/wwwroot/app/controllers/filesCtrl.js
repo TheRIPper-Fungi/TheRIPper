@@ -29,6 +29,7 @@
         // upload on file select or drop
         //https://stackoverflow.com/questions/38144194/iformfile-is-always-empty-in-asp-net-core-webapi
         $scope.upload = function () {
+            debugger;
             $scope.uploadingFile = true;
             var fileUpload = $("#fileup").get(0);
             var files = fileUpload.files;

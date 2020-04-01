@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bio;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using TheRIPper.BL.Models;
 using TheRIPper.BL.RIP;
@@ -14,6 +15,12 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 {
     public class RIPController : Controller
     {
+        private IMemoryCache _cache;
+
+        public RIPController(IMemoryCache cache) {
+            _cache = cache;
+        }
+
         public IActionResult RIPSequenceView() {
             return View();
         }
@@ -47,7 +54,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
             SequenceModels sequenceObject = null;
             try {
                 sequenceObject = SessionManagement
-                        .SessionMethods.Get<FileModels>(HttpContext.Session, FileName)
+                        .SessionMethods.Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                         .Sequences.Where(w => w.SequenceName == SequenceName)
                         .FirstOrDefault();
             }
@@ -71,7 +78,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 
             List<SequenceModels> sequenceObjects = SessionManagement
                 .SessionMethods
-                .Get<FileModels>(HttpContext.Session, FileName)
+                .Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                 .Sequences;
             List<ISequence> sequences = new List<ISequence>();
 
@@ -91,7 +98,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 
             ISequence sequence = SessionManagement
                 .SessionMethods
-                .Get<FileModels>(HttpContext.Session, FileName)
+                .Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                 .Sequences
                 .Where(w => w.SequenceName == SequenceName)
                 .Select(s => SequenceHelpers.BuildSequenceFromString(s.SequenceName, s.SequenceContent))
@@ -107,7 +114,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
         public JsonResult LRARFile(string FileName, int window, int slide, double compositeRequirement,double productRequirement,double substrateRequirement, int compositeCountRequirement, bool checkGCContent) {
             List<ISequence> sequences = SessionManagement
                 .SessionMethods
-                .Get<FileModels>(HttpContext.Session, FileName)
+                .Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                 .Sequences
                 .Select(s => SequenceHelpers.BuildSequenceFromString(s.SequenceName, s.SequenceContent))
                 .ToList();
@@ -128,11 +135,11 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 
             List<ISequence> sequences = SessionManagement
                 .SessionMethods
-                .Get<FileModels>(HttpContext.Session, FileName)
+                .Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                 .Sequences
                 .Select(s => SequenceHelpers.BuildSequenceFromString(s.SequenceName, s.SequenceContent))
                 .ToList();
-
+            GFF3Logic.GFF3Sequence(sequences[0], window, slide, compositeRequirement, productRequirement, substrateRequirement, 1, true);
             var results = RIPProfileLogic.RIPFileProfile(sequences, window, slide, compositeRequirement, productRequirement, substrateRequirement, compositeCountRequirement, FileName, checkGcContent);
 
             return new JsonResult(JsonConvert.SerializeObject(results)) { ContentType = "application/json", StatusCode = 200 };
@@ -146,7 +153,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 
             List<ISequence> sequences = SessionManagement
                .SessionMethods
-               .Get<FileModels>(HttpContext.Session, FileName)
+               .Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                .Sequences
                .Select(s => SequenceHelpers.BuildSequenceFromString(s.SequenceName, s.SequenceContent))
                .ToList();

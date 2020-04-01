@@ -234,6 +234,7 @@ app.run(['$rootScope', '$http', '$cookies', '$cookieStore', function ($rootScope
         // upload on file select or drop
         //https://stackoverflow.com/questions/38144194/iformfile-is-always-empty-in-asp-net-core-webapi
         $scope.upload = function () {
+            debugger;
             $scope.uploadingFile = true;
             var fileUpload = $("#fileup").get(0);
             var files = fileUpload.files;
@@ -627,6 +628,8 @@ angular.module('home', [])
             //if ($routeParams.SequenceId)
             $scope.IsSequence = $routeParams.SequenceName !== undefined;
             $scope.IsFile = $routeParams.FileName !== undefined;
+            $scope.fileName = $routeParams.FileName;
+
             if ($scope.IsSequence) {
                 $scope.SequenceName = $routeParams.SequenceName;
                 //Logic
@@ -703,6 +706,11 @@ angular.module('home', [])
                 }
             }
             return a;
+        }
+
+        $scope.downloadGff3 = function () {
+
+
         }
 
         $scope.slideRange = function (direction) {
@@ -1099,6 +1107,31 @@ angular.module('home', [])
                 .then(function (data) { return data; })
                 .then(function (data) { return data.data; });
         }
+    }
+})();
+(function () {
+    'use strict';
+
+    angular
+        .module('app')
+        .factory('gff3Factory', gff3Factory);
+
+    gff3Factory.$inject = ['$http'];
+
+    function gff3Factory($http) {
+        var service = {
+            GFF3File: GFF3File,
+        };
+
+        return service;
+        //api/gff3/file/{FileName}/{window}/{slide}/{compositeRequirement}/{productRequirement}/{substrateRequirement}/{compositeCountRequirement}/{checkGcContent}
+        function GFF3File() {
+            return $http.get('/api/gff3/file/' + FileName + '/' + window + '/' + slide + '/' + compositeRequirement + '/' + productRequirement + '/' + substrateRequirement + '/' + compositeCountRequirement + '/' + checkGcContent)
+                .then(function (data) { return data; })
+                .then(function (data) { return JSON.parse(data.data); })
+        }
+
+       
     }
 })();
 (function () {

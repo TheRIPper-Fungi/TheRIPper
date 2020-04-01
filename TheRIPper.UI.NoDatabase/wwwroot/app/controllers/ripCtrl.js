@@ -142,6 +142,8 @@
             //if ($routeParams.SequenceId)
             $scope.IsSequence = $routeParams.SequenceName !== undefined;
             $scope.IsFile = $routeParams.FileName !== undefined;
+            $scope.fileName = $routeParams.FileName;
+
             if ($scope.IsSequence) {
                 $scope.SequenceName = $routeParams.SequenceName;
                 //Logic
@@ -218,6 +220,11 @@
                 }
             }
             return a;
+        }
+
+        $scope.downloadGff3 = function () {
+
+
         }
 
         $scope.slideRange = function (direction) {

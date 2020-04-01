@@ -4,6 +4,7 @@ using Bio.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,11 @@ namespace TheRIPper.UI.NoDatabase.Controllers
     public class FilesController : Controller
     {
         private IHostingEnvironment _env;
+        private IMemoryCache _cache;
 
-        public FilesController(IHostingEnvironment env) {
+        public FilesController(IHostingEnvironment env, IMemoryCache cache) {
             _env = env;
+            _cache = cache;
         }
 
         public IActionResult Files() {
@@ -36,49 +39,59 @@ namespace TheRIPper.UI.NoDatabase.Controllers
             try {
                 var files = collection.Files;
 
-                var file = files[0];
+                for (int findex = 0; findex < files.Count; findex++) {
+                    var file = files[findex];
 
-                ISequenceParser parser = new Bio.IO.FastA.FastAParser();
-                List<SequenceModels> sequences = new List<SequenceModels>();
-                sequences = parser.Parse(file.OpenReadStream()).Select(s => new SequenceModels {
-                    Id = s.ID,
-                    SequenceContent = s.ConvertToString(),
-                    SequenceName = s.ID,
-                    GCContent = Math.Round(GCContentLogic.GCContentSingleSequenceTotal(s), 2)
-                })
-                .ToList();
+                    ISequenceParser parser = new Bio.IO.FastA.FastAParser();
+                    List<SequenceModels> sequences = new List<SequenceModels>();
+                    sequences = parser.Parse(file.OpenReadStream()).Select(s => new SequenceModels
+                    {
+                        Id = s.ID,
+                        SequenceContent = s.ConvertToString(),
+                        SequenceName = s.ID,
+                        GCContent = Math.Round(GCContentLogic.GCContentSingleSequenceTotal(s), 2)
+                    })
+                    .ToList();
 
-                var fileObject = new FileModels {
-                    FileName = file.FileName,
-                    DateTimeAdded = DateTime.Now,
-                    Sequences = sequences
-                };
+                    var fileObject = new FileModels
+                    {
+                        FileName = file.FileName,
+                        DateTimeAdded = DateTime.Now,
+                        Sequences = sequences
+                    };
 
-                if (SessionManagement
-                    .SessionMethods
-                    .Get<FileModels>(HttpContext.Session, file.FileName) == null) {
-                    //if this file is not in session add it to the list of files
-                    List<SessionFileModels> sessionFiles = SessionManagement
+                    if (SessionManagement
                         .SessionMethods
-                        .Get<List<SessionFileModels>>(HttpContext.Session, "FileList");
-                    if (sessionFiles != null) {
-                        sessionFiles.Add(new SessionFileModels {
-                            FileName = file.FileName,
-                            SequenceCount = fileObject.Sequences.Count
-                        });
-                        SessionManagement.SessionMethods.Set<List<SessionFileModels>>(HttpContext.Session, "FileList", sessionFiles);
+                        .Get<FileModels>(HttpContext.Session, file.FileName, false, _cache) == null)
+                    {
+                        //if this file is not in session add it to the list of files
+                        List<SessionFileModels> sessionFiles = SessionManagement
+                            .SessionMethods
+                            .Get<List<SessionFileModels>>(HttpContext.Session, "FileList", true, null);
+                        if (sessionFiles != null)
+                        {
+                            sessionFiles.Add(new SessionFileModels
+                            {
+                                FileName = file.FileName,
+                                SequenceCount = fileObject.Sequences.Count
+                            });
+                            SessionManagement.SessionMethods.Set<List<SessionFileModels>>(HttpContext.Session, "FileList", sessionFiles, true, _cache);
+                        }
+                        else
+                        {
+                            List<SessionFileModels> newFileList = new List<SessionFileModels>();
+                            newFileList.Add(new SessionFileModels
+                            {
+                                FileName = file.FileName,
+                                SequenceCount = fileObject.Sequences.Count
+                            });
+                            SessionManagement.SessionMethods.Set<List<SessionFileModels>>(HttpContext.Session, "FileList", newFileList, true, _cache);
+                        }
                     }
-                    else {
-                        List<SessionFileModels> newFileList = new List<SessionFileModels>();
-                        newFileList.Add(new SessionFileModels {
-                            FileName = file.FileName,
-                            SequenceCount = fileObject.Sequences.Count
-                        });
-                        SessionManagement.SessionMethods.Set<List<SessionFileModels>>(HttpContext.Session, "FileList", newFileList);
-                    }
-                }
 
-                SessionManagement.SessionMethods.Set<FileModels>(HttpContext.Session, file.FileName, fileObject);
+                    SessionManagement.SessionMethods.Set<FileModels>(HttpContext.Session, file.FileName, fileObject, false, _cache);
+                }
+                
             }
             catch (Exception ex) {
                 return null;
@@ -95,7 +108,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 
             var files = SessionManagement
                 .SessionMethods
-                .Get<List<SessionFileModels>>(HttpContext.Session, "FileList");
+                .Get<List<SessionFileModels>>(HttpContext.Session, "FileList", true, null);
 
             return new JsonResult(JsonConvert.SerializeObject(new { files })) { ContentType = "application/json", StatusCode = 200 };
 

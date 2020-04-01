@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bio;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using TheRIPper.BL.GCContent;
 using TheRIPper.BL.SequenceHelpers;
@@ -13,11 +14,15 @@ namespace TheRIPper.UI.NoDatabase.Controllers
 {
     public class GCContentController : Controller
     {
+        private IMemoryCache _cache;
+        public GCContentController(IMemoryCache cache) {
+            _cache = cache;
+        }
         [HttpGet]
         [Route("api/gccontent/sequence/{FileName}/{SequenceName}")]
         public JsonResult GCContentSingleSequenceTotal(string FileName, string SequenceName) {
 
-            var sequenceObject = SessionManagement.SessionMethods.Get<FileModels>(HttpContext.Session, FileName)
+            var sequenceObject = SessionManagement.SessionMethods.Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                 .Sequences.Where(w => w.SequenceName == SequenceName).FirstOrDefault();
 
             ISequence sequence = SequenceHelpers.BuildSequenceFromString(sequenceObject.SequenceName, sequenceObject.SequenceContent);
@@ -35,7 +40,7 @@ namespace TheRIPper.UI.NoDatabase.Controllers
                 
             SessionManagement
                 .SessionMethods
-                .Get<FileModels>(HttpContext.Session, FileName)
+                .Get<FileModels>(HttpContext.Session, FileName, false, _cache)
                 .Sequences
                 .ForEach(f => {
                     sequences.Add(SequenceHelpers.BuildSequenceFromString(f.SequenceName, f.SequenceContent));
