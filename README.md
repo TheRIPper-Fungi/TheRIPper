@@ -31,8 +31,8 @@ There are a few pre-built distributions of The RIPper available, download the zi
 2.  wget https://github.com/TheRIPper-Fungi/TheRIPper/releases/download/Latest-Linux-NoDb/Linux.zip
 3.  unzip Linux.zip
 4.  cd Linux/
-5.  chmod +x TheRIPper
-6.  ./TheRIPper
+5.  chmod +x TheRIPper.UI.NoDatabase
+6.  ./TheRIPper.UI.NoDatabase
 
 
 ## Licence
